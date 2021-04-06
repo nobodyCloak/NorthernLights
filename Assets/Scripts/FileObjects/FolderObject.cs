@@ -12,7 +12,11 @@ namespace AuroraEngine
 
 		public Dictionary<(string, ResourceType), string> resources = new Dictionary<(string, ResourceType), string>();
 
-		public FolderObject(string filepath) : base(filepath, false) { }
+		public FolderObject(string filepath) : base(filepath, false)
+		{
+			// Creates the pathway if it does not exist. Otherwise, does nothing.
+			Directory.CreateDirectory(filepath);
+		}
 
 		public override void SetupArchive()
 		{

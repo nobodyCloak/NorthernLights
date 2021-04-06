@@ -18,6 +18,7 @@ using UnityEngine;
 public class CodeGenerator : EditorWindow
 {
     const string TAB = "    ";
+    // Again, not sure if these affect anything cross-compatibility wise.
     string OutputLocation = "D:\\KOTOR\\KotOR-Unity\\Generated";
     //string OutputLocation = "D:\\KOTOR\\KotOR-Unity\\tmp\\GeneratedTmp";
     string MetadataLocation = "D:\\KOTOR\\KOTOR1\\KOTOR\\tools\\aurorapdf\\tables";
@@ -181,7 +182,7 @@ public class AuroraAnimations {
 
         Debug.Log(def);
 
-        File.WriteAllText(OutputLocation + "\\" + "animations.cs", def);
+        File.WriteAllText(Path.Combine(OutputLocation, "animations.cs"), def);
     }
 
     // Source: https://stackoverflow.com/questions/7413612/how-to-limit-the-execution-time-of-a-function-in-c-sharp
@@ -226,7 +227,7 @@ public class AuroraAnimations {
         foreach (string className in defs.Keys)
         {
             string code = preamble + defs[className].ToString();
-            File.WriteAllText(OutputLocation + "\\" + className + ".cs", code);
+            File.WriteAllText(Path.Combine(OutputLocation, className + ".cs"), code);
         }
     }
 
@@ -237,21 +238,21 @@ public class AuroraAnimations {
         Dictionary<string, ClassDefinition> defs = new Dictionary<string, ClassDefinition>();
         // Read GFF objects from disk
         Debug.Log("Loading BIFs");
-        LoadGFFsFromBIFs(loc + "\\data", defs, compat, ExistsIn.BASE);
+        LoadGFFsFromBIFs(Path.Combine(loc, "data"), defs, compat, ExistsIn.BASE);
 
         Debug.Log("Loading RIMs");
-        LoadGFFsFromRIMs(loc + "\\modules", defs, compat, ExistsIn.BASE);
+        LoadGFFsFromRIMs(Path.Combine(loc, "modules"), defs, compat, ExistsIn.BASE);
 
         if (compat == Compatibility.TSL)
         {
             // Load data from all .erf files (which are ERF files, and contain DLG files for the module)
-            foreach (string erf in Directory.GetFiles(loc + "\\modules", "*.erf"))
+            foreach (string erf in Directory.GetFiles(Path.Combine(loc, "modules"), "*.erf"))
             {
                 LoadGFFsFromERF(erf, defs, compat, ExistsIn.BASE);
             }
 
             // Load data from all .mod files (which are ERF files)
-            foreach (string mod in Directory.GetFiles(loc + "\\modules", "*.mod"))
+            foreach (string mod in Directory.GetFiles(Path.Combine(loc, "modules"), "*.mod"))
             {
                 LoadGFFsFromERF(mod, defs, compat, ExistsIn.BASE);
             }
@@ -285,12 +286,12 @@ public class AuroraAnimations {
                      - Screen.tga (can ignore this)
                 */
                 // Load the GFFs
-                LoadGFFFromFile(subFolder + "\\GLOBALVARS.res", defs, "AuroraGlobalVars", compat, ExistsIn.SAVE);
-                LoadGFFFromFile(subFolder + "\\PARTYTABLE.res", defs, "AuroraPartyTable", compat, ExistsIn.SAVE);
-                LoadGFFFromFile(subFolder + "\\savenfo.res", defs, "AuroraSaveNfo", compat, ExistsIn.SAVE);
+                LoadGFFFromFile(Path.Combine(subFolder, "GLOBALVARS.res"), defs, "AuroraGlobalVars", compat, ExistsIn.SAVE);
+                LoadGFFFromFile(Path.Combine(subFolder, "PARTYTABLE.res"), defs, "AuroraPartyTable", compat, ExistsIn.SAVE);
+                LoadGFFFromFile(Path.Combine(subFolder, "savenfo.res"), defs, "AuroraSaveNfo", compat, ExistsIn.SAVE);
 
                 // Load the SAV (in ERF format)
-                LoadGFFsFromERF(subFolder + "\\SAVEGAME.sav", defs, compat, ExistsIn.SAVE);
+                LoadGFFsFromERF(Path.Combine(subFolder, "SAVEGAME.sav"), defs, compat, ExistsIn.SAVE);
                 //if (i >= 2)
                 //{
                 //    break;

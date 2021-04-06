@@ -529,16 +529,16 @@ public class KModuleEditor : EditorWindow
         // We will save the files to a temporary folder
         string folder = AuroraPrefs.GetModuleOutLocation();
 
-        string srimPath = modulePath + "\\" + moduleName + "_s.rim";
-        string dlgPath = modulePath + "\\" + moduleName + "_dlg.erf";
-        string modPath = modulePath + "\\" + moduleName + ".mod";
+        string srimPath = Path.Combine(modulePath, moduleName + "_s.rim");
+        string dlgPath = Path.Combine(modulePath, moduleName + "_dlg.erf");
+        string modPath = Path.Combine(modulePath, moduleName + ".mod");
 
         // Copy the current module's _s.rim file to the temp folder
         if (File.Exists(srimPath))
         {
-            File.Copy(modulePath + "\\" + moduleName + "_s.rim", folder + "tmp.rim");
+            File.Copy(Path.Combine(modulePath, moduleName + "_s.rim"), Path.Combine(folder, "tmp.rim"));
             UnpackArchive(folder, "tmp.rim", "unrim");
-            UnityEngine.Windows.File.Delete(folder + "tmp.rim");
+            UnityEngine.Windows.File.Delete(Path.Combine(folder, "tmp.rim"));
         }
         // If we are working with TSL, we also copy the _dlg.erf and .mod files if they exist
         if (AuroraPrefs.TargetGame() == Game.TSL)
@@ -634,7 +634,7 @@ public class KModuleEditor : EditorWindow
     public static void UnpackArchive(string folder, string name, string type)
     {
         AuroraEngine.Resources.RunXoreosTools(
-            folder + name,
+            Path.Combine(folder, name),
             type,
             "e",
             folder
@@ -647,11 +647,11 @@ public class KModuleEditor : EditorWindow
             Debug.LogError("Empty extention will mean the resulting template will require hex-editing to set the template type");
         }
         // Create an XML file for the GFF template
-        string xmlpath = folder + "tmp.xml";
+        string xmlpath = Path.Combine(folder, "tmp.xml");
         string xml = template.ToXML(ext.ToUpper());
         Debug.Log(name + ":\n" + xml);
         File.WriteAllText(xmlpath, xml);
-        File.WriteAllText(Application.dataPath + "\\out.xml", xml);
+        File.WriteAllText(Path.Combine(Application.dataPath, "out.xml"), xml);
 
         // Convert from XML to GFF using xoreos-tools
         string filename = name + (ext == "" ? "" : "." + ext);

@@ -126,6 +126,7 @@ public class AuroraData
             dataFolders.Add(new FolderObject(dir));
         }
         bifObjects = dataFolders.ToArray();
+        UnityEngine.Debug.Log("bifObjects: " + bifObjects);
 
         textures = new FolderObject(Path.Combine(AuroraPrefs.GetKotorLocation(), "textures", "tpa"));
         guiTextures = new FolderObject(Path.Combine(AuroraPrefs.GetKotorLocation(), "textures", "gui"));
