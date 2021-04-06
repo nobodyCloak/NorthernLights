@@ -123,6 +123,7 @@ public class AuroraData
         // contain all the BIF objects
         foreach (string dir in Directory.EnumerateDirectories(Path.Combine(AuroraPrefs.GetKotorLocation(), "data")))
         {
+            UnityEngine.Debug.Log(dir);
             dataFolders.Add(new FolderObject(dir));
         }
         bifObjects = dataFolders.ToArray();
@@ -156,10 +157,10 @@ public class AuroraData
         bifObjects = new BIFObject[bifs.Length];
         for (int i = 0; i < bifs.Length; i++)
         {
-            bifObjects[i] = new BIFObject(Path.Combine(AuroraPrefs.GetKotorLocation(), bifs[i].Filename), keyObject);
+            bifObjects[i] = new BIFObject(Path.Combine(AuroraPrefs.GetKotorLocation(), "data", bifs[i].Filename), keyObject);
         }
 
-        textures = new ERFObject(Path.Combine(AuroraPrefs.GetKotorLocation(), "TexturePacks", "swpc_tex_tpa.erf") + ".erf");
+        textures = new ERFObject(Path.Combine(AuroraPrefs.GetKotorLocation(), "TexturePacks", "swpc_tex_tpa.erf"));
         guiTextures = new ERFObject(Path.Combine(AuroraPrefs.GetKotorLocation(), "TexturePacks", "swpc_tex_gui.erf"));
 
         // Load the VO directory

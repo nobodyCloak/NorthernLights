@@ -84,7 +84,7 @@ namespace AuroraEngine
 					buffer = new byte[bifs[i].FilenameSize];
 					stream.Read(buffer, 0, (int)bifs[i].FilenameSize);
 
-					bifs[i].Filename = Encoding.UTF8.GetString(buffer).TrimEnd('\0');
+					bifs[i].Filename = Encoding.UTF8.GetString(buffer).TrimEnd('\0').Replace("data\\", "");
 
 					stream.Position = pos;
 				}

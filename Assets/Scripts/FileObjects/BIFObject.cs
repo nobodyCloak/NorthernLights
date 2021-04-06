@@ -70,6 +70,7 @@ namespace AuroraEngine
 		{
 			for (int i = 0; i < variableResourceCount; i++) {
 				if (this.resources[i].ID == id) {
+                    UnityEngine.Debug.Log(this.resources[i].ID);
 					return this.resources[i];
 				}
 			}
@@ -96,7 +97,7 @@ namespace AuroraEngine
             if (keyObject.TryGetResourceID(resref, rt, out id))
             {
                 uint bifIndex = id >> 20;
-
+                UnityEngine.Debug.Log(resref + " " + rt + " " + id);
                 return GetResourceData(GetResourceById(id));
             }
 
