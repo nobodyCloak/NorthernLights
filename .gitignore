@@ -121,3 +121,18 @@ Icon
 Network Trash Folder
 Temporary Items
 .apdisk
+
+# Project-specific files
+*.mp4
+*.bif
+*.mdl
+*.mod
+*.rim
+*.dlg
+*.ncs
+*.nss
+*.utd
+*.uti
+*.utp
+*.uts
+*.utt
