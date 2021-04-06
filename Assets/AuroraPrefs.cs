@@ -43,8 +43,8 @@ public class AuroraPrefs : ScriptableObject
         {
             Debug.LogWarning("Creating settings file");
             settings = ScriptableObject.CreateInstance<AuroraPrefs>();
-            settings.k1Location = "D:\\SteamLibrary\\steamapps\\common\\swkotor";
-            settings.tslLocation = "D:\\SteamLibrary\\steamapps\\common\\Knights of the Old Republic II";
+            settings.k1Location = "D:\\SteamLibrary\\steamapps\\common\\swkotor";  //NOBODYCLOAK
+            settings.tslLocation = "D:\\SteamLibrary\\steamapps\\common\\Knights of the Old Republic II";  //NOBODYCLOAK
             settings.game = Game.KotOR;
             settings.devMode = false;
             AssetDatabase.CreateAsset(settings, k_MyCustomSettingsPath);
@@ -95,10 +95,11 @@ public class AuroraPrefs : ScriptableObject
     public static string GetModuleOutLocation ()
     {
         string modOut = prefs.moduleOutLocation;
-        if (!modOut.EndsWith("\\"))
-        {
-            modOut += "\\";
-        }
+        // if (!modOut.EndsWith("\\"))
+        // {
+        //     modOut += "\\";
+        // }
+        // Hopefully this is not needed anywhere given that Path.Combine() should be handling that everywhere
         return modOut;
     }
 

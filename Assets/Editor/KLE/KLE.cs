@@ -8,6 +8,7 @@ using UnityEngine;
 
 public class KLE : EditorWindow
 {
+    // Not sure if these need to be changed for cross-compatibility
     string k1Location = "D:\\SteamLibrary\\steamapps\\common\\swkotor";
     string tslLocation = "D:\\SteamLibrary\\steamapps\\common\\Knights of the Old Republic II";
     int moduleIdx = 0;
@@ -78,10 +79,10 @@ public class KLE : EditorWindow
 
         if (AuroraPrefs.DeveloperMode())
         {
-            modules = Directory.GetDirectories(AuroraPrefs.GetKotorLocation() + "\\modules", "*");
+            modules = Directory.GetDirectories(Path.Combine(AuroraPrefs.GetKotorLocation(), "modules"), "*");
         } else
         {
-            modules = Directory.GetFiles(AuroraPrefs.GetKotorLocation() + "\\modules", "*");
+            modules = Directory.GetFiles(Path.Combine(AuroraPrefs.GetKotorLocation(), "modules"), "*");
         }
 
         names = new List<string>();
@@ -93,7 +94,7 @@ public class KLE : EditorWindow
             {
                 continue;
             }
-            string name = mod.ToUpper().Split('\\').Last().Replace(".RIM", "").Replace(".MOD", "");
+            string name = Path.GetFileName(mod).ToUpper().Replace(".RIM", "").Replace(".MOD", "");
             if (!names.Contains(name))
             {
                 names.Add(name);

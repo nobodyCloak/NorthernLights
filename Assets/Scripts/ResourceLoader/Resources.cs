@@ -616,7 +616,7 @@ namespace AuroraEngine
 
         public static AudioClip LoadAudio(string resref)
         {
-            using (FileStream stream = File.Open(AuroraPrefs.GetKotorLocation() + "\\streammusic\\" + resref + ".wav", FileMode.Open)) {
+            using (FileStream stream = File.Open(Path.Combine(AuroraPrefs.GetKotorLocation(), "streammusic", resref + ".wav"), FileMode.Open)) {
 				WAVObject wav = new WAVObject(stream);
 
 				AudioClip clip = AudioClip.Create(resref, wav.data.Length / wav.channels, wav.channels, wav.sampleRate, false);
@@ -676,7 +676,7 @@ namespace AuroraEngine
             // Next six characters are the subfolder
             string subFolder = resref.Substring(6, 6);
 
-            string fullname = AuroraPrefs.GetKotorLocation() + "\\streamwaves\\" + topFolder + "\\" + subFolder + "\\" + resref + ".wav";
+            string fullname = Path.Combine(AuroraPrefs.GetKotorLocation(), "streamwaves", topFolder, subFolder, resref + ".wav");
 
             if (!File.Exists(fullname))
             {
@@ -700,22 +700,31 @@ namespace AuroraEngine
             byte[] buffer = new byte[stream.Length];
             stream.Read(buffer, 0, (int)stream.Length);
 
-            FileStream filestream = File.Create("D:\\KOTOR\\KotOR-Unity\\tmp\\tmp.ncs");
+            FileStream filestream = File.Create("D:\\KOTOR\\KotOR-Unity\\tmp\\tmp.ncs");  // NOBODYCLOAK
             stream.Seek(0, SeekOrigin.Begin);
             stream.CopyTo(filestream);
             filestream.Close();
 
-            return RunXoreosTools("D:\\KOTOR\\KotOR-Unity\\tmp\\tmp.ncs", utility, arguments);
+            return RunXoreosTools("D:\\KOTOR\\KotOR-Unity\\tmp\\tmp.ncs", utility, arguments);  // NOBODYCLOAK
         }
 
-        public static string RunXoreosTools(string loc, string utility, string arguments, string workingdir = null)
+        public static string RunXoreosTools(string loc, string utility, string arguments, string workingdir = null)  // NOBODYCLOAK
         {
             // Then we read it using xoreos-tools's disassembler
             Process p = new Process();
             p.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
             p.StartInfo.CreateNoWindow = true;
             p.StartInfo.UseShellExecute = false;
-            p.StartInfo.FileName = Directory.GetParent(Application.dataPath) + "\\xt\\" + utility + ".exe";
+            if (Path.Combine("KotOR", "Rocks").Contains("\\"))
+            {
+                p.StartInfo.FileName = Directory.GetParent(Application.dataPath) + "\\xt\\windows\\" + utility + ".exe";
+            }
+            else
+            {
+                // Obviously if Linux were to be supported it'd need a better check than this
+                p.StartInfo.FileName = Directory.GetParent(Application.dataPath) + "/xt/macos/" + utility;
+                // p.StartInfo.FileName = "/bin/bash";
+            }
             p.StartInfo.Arguments = arguments + " " + loc;
             p.StartInfo.RedirectStandardOutput = true;
             p.StartInfo.RedirectStandardError = true;
